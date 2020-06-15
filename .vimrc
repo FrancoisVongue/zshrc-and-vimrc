@@ -151,3 +151,8 @@ if !has('nvim')
     set wildmenu
     set colorcolumn=90
 endif
+
+" gVIM
+if has("gui_running")
+    set guifont=Fira_Code_SemiBold:h11
+endif
