@@ -1,6 +1,7 @@
 syntax on                  " Enable syntax highlighting.
 filetype plugin indent on  " Enable file type based indentation.
 
+set shell=\"C:\Program\ Files\Git\bin\bash.exe"\ -f
 set foldmethod=indent           "fold based on spaces
 set wildmenu                    "show files on tab in e: 
 set wildmode=list:longest,full
@@ -23,10 +24,15 @@ set backspace=2            " Fix backspace behavior on most terminals.
 packloadall
 silent! helptags ALL
 
-noremap <c-h> <c-w><c-h>
-noremap <c-j> <c-w><c-j>
-noremap <c-k> <c-w><c-k>
-noremap <c-l> <c-w><c-l>
+" jumping on alt
+tnoremap <C-h> <C-\><C-n><C-w>h
+tnoremap <C-j> <C-\><C-n><C-w>j
+tnoremap <C-k> <C-\><C-n><C-w>k
+tnoremap <C-l> <C-\><C-n><C-w>l
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
 " Use ; in addition to : to type commands.
 noremap ; :
@@ -43,11 +49,12 @@ Plug 'pangloss/vim-javascript'
 Plug 'vim-airline/vim-airline'
 Plug 'raimondi/delimitmate'
 Plug 'nathanaelkane/vim-indent-guides'
-
+Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar' 
 Plug 'scrooloose/nerdtree' 
 Plug 'mileszs/ack.vim' 
+Plug 'leafgarland/typescript-vim' 
 
 call plug#end()
 
@@ -58,9 +65,30 @@ let mapleader = ","
 let g:netrw_winsize = 25
 let g:netrw_banner = 0
 let g:netrw_brose_split = 2
+
+" NERDTree setup
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeMinimalUI = 1
+let g:NERDTreeIgnore = []
+let g:NERDTreeStatusline = ''
+    " Automaticaly close nvim if NERDTree is only thing left open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+    " Toggle
+nnoremap <silent> <C-b> :NERDTreeToggle<CR>
+
+" open new split panes to right and below
+set splitright
+set splitbelow
+" turn terminal to normal mode with escape
+tnoremap <Esc> <C-\><C-n>
+" start terminal in insert mode
+au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+nnoremap <leader>tl :term<cr>
+
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_auto_colors = 0
 let g:coc_disable_startup_warning = 1
+let g:coc_global_extensions = ['coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-tsserver']
 
 nmap <leader>cs :source $MYVIMRC<cr>
 nnoremap <leader>ut :UndotreeShow<cr>
@@ -154,5 +182,5 @@ endif
 
 " gVIM
 if has("gui_running")
-    set guifont=Fira_Code_SemiBold:h11
+    set guifont=Fira_Code_SemiBold:h11:cANSI
 endif
